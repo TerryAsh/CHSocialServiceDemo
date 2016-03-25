@@ -13,9 +13,9 @@
 #import "UMSocialQQHandler.h"
 #import "UMSocialControllerService.h"
 static NSString *CHUMAPP_KEY ;
+static NSMutableSet *sharesType;
 typedef void(^ResultCallback)(BOOL successful) ;
 @interface CHSocialServiceCenter ()<UMSocialUIDelegate>
-@property (strong ,nonatomic) NSMutableDictionary *sharesType;
 @end
 @implementation CHSocialServiceCenter{
     ResultCallback _callback;
@@ -25,6 +25,7 @@ typedef void(^ResultCallback)(BOOL successful) ;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc]init];
+        sharesType = [NSMutableSet set];
         
     });
     return instance;
@@ -42,36 +43,64 @@ typedef void(^ResultCallback)(BOOL successful) ;
     switch (type) {
         case CHSocialQQ:
             [UMSocialQQHandler setQQWithAppId:identifier appKey:key url:url];
+            [sharesType addObject:UMShareToQQ];
             break;
         case CHSocialSina:
             [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:key
                                                       secret:secret
                                                  RedirectURL:redirectURL];
+            [sharesType addObject:UMShareToSina];
             break;
 
         case CHSocialWeChat:
             [UMSocialWechatHandler setWXAppId:identifier appSecret:secret url:url];
+            [sharesType addObject:UMShareToWechatSession];
+            [sharesType addObject:UMShareToWechatTimeline];
             break;
             
         default:
             break;
     }
 }
-- (void)shareText:(NSString *)text
+- (void)shareTitle:(NSString *)text
+           content:(NSString *)content
+         imageURL:(NSString *)imageUrl
             image:(UIImage *)image
+      urlResource:(NSString *)url
        controller:(UIViewController *)controller
        completion:(void(^)(BOOL successful))finish{
     NSAssert(CHUMAPP_KEY.length > 0, @"UMKEY IS NIL PLEASE SET");
+    UMSocialUrlResource *resource = [[UMSocialUrlResource alloc]initWithSnsResourceType:UMSocialUrlResourceTypeImage url:imageUrl];
+    UMSocialUrlResource *qqResource = [[UMSocialUrlResource alloc]initWithSnsResourceType:UMSocialUrlResourceTypeWeb url:url];
+    UMSocialUrlResource *sinaResource = [[UMSocialUrlResource alloc]initWithSnsResourceType:UMSocialUrlResourceTypeWeb url:url];
+    UMSocialWechatSessionData *data = [[UMSocialWechatSessionData alloc]init];
+    data.wxMessageType =  UMSocialWXMessageTypeWeb;
+    data.url = url;
+    data.title = text;
+    data.urlResource = resource;
+    UMSocialQQData *qqData = [[UMSocialQQData alloc]init];
+    qqData.urlResource = qqResource;
+
+    UMSocialSinaData *sinaData = [[UMSocialSinaData alloc]init];
+    sinaData.shareText = content;
+    if (image) {
+        sinaData.shareImage = image;
+    }
+    sinaData.urlResource = sinaResource;
+    [UMSocialData defaultData].extConfig.qqData = qqData;
+    [UMSocialData defaultData].extConfig.wechatSessionData = data;
+    [UMSocialData defaultData].extConfig.wechatTimelineData = (UMSocialWechatTimelineData *)data;
+    [UMSocialData defaultData].extConfig.sinaData = sinaData;
     [UMSocialSnsService presentSnsIconSheetView:controller
                                          appKey:CHUMAPP_KEY
-                                      shareText:text
+                                      shareText:content
                                      shareImage:image
-                                shareToSnsNames:nil
+                                shareToSnsNames:[sharesType copy]
                                        delegate:self];
-    
     if (finish) {
         _callback = finish;
     }
+
 }
 - (void)loginInAppliactionType:(CHSocialType)type
                     controller:(UIViewController *)controller

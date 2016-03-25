@@ -24,9 +24,10 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)share:(UIButton *)sender {
-        [[CHSocialServiceCenter shareInstance]shareText:@"um" image:nil controller:self completion:^(BOOL successful) {
-            
-        }];
+    [[CHSocialServiceCenter shareInstance]shareTitle:@"测试分享标题" content:@"我是分享的内容" imageURL:nil image:[UIImage imageNamed:@"demo_image"] urlResource:@"http://www.alibaba.com" controller:self completion:^(BOOL successful) {
+        
+    }];
+
 }
 
 @end

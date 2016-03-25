@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "CHSocialService.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,7 +18,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [CHSocialServiceCenter setUmengAppkey:@"53290df956240b6b4a0084b3"];
-    [[CHSocialServiceCenter shareInstance] configurationAppKey:nil AppIdentifier:@"wxdc1e388c3822c80b" secret:@"a393c1527aaccb95f3a4c88d6d1455f6" redirectURL:nil sourceURL:@"http://www.umeng.com/social" type:CHSocialWeChat];
+    [[CHSocialServiceCenter shareInstance] configurationAppKey:nil AppIdentifier:@"wxdc1e388c3822c80b" secret:@"a393c1527aaccb95f3a4c88d6d1455f6" redirectURL:nil sourceURL:@"http://www.baidu.com" type:CHSocialWeChat];
+    [[CHSocialServiceCenter shareInstance] configurationAppKey:@"c7394704798a158208a74ab60104f0ba" AppIdentifier:@"100424468" secret:nil redirectURL:nil sourceURL:@"http://www.umeng.com/social" type:CHSocialQQ];
+    [[CHSocialServiceCenter shareInstance] configurationAppKey:@"3921700954" AppIdentifier:@"100424468" secret:@"04b48b094faeb16683c32669824ebdad" redirectURL:@"http://sns.whalecloud.com/sina2/callback" sourceURL:@"http://www.umeng.com/social" type:CHSocialSina];
+
     return YES;
 }
 
