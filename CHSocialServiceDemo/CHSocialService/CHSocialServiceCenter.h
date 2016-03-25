@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CHSocialResponseData.h"
 typedef NS_OPTIONS(NSInteger ,CHSocialType) {
     CHSocialSina,
     CHSocialWeChat,
@@ -28,6 +29,10 @@ typedef NS_OPTIONS(NSInteger ,CHSocialType) {
  */
 + (void)setUmengAppkey:(NSString *)key;
 
++ (BOOL)handleOpenURL:(NSURL *)url delegate:(id)delegate;
+
++ (void)applicationDidBecomeActive;
+
 - (void)shareTitle:(NSString *)text
            content:(NSString *)content
           imageURL:(NSString *)imageUrl
@@ -45,7 +50,7 @@ typedef NS_OPTIONS(NSInteger ,CHSocialType) {
 
 - (void)loginInAppliactionType:(CHSocialType)type
                     controller:(UIViewController *)controller
-                    completion:(void(^)(NSDictionary *info))finish;
+                    completion:(void(^)(CHSocialResponseData *response))finish;
 
 + (instancetype)new __unavailable;
 - (instancetype)init __unavailable;

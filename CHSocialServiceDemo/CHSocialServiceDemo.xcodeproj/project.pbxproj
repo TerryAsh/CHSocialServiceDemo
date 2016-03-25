@@ -16,6 +16,7 @@
 		062B86991CA5395D00083F34 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 062B86981CA5395D00083F34 /* CoreTelephony.framework */; };
 		062B869B1CA5396500083F34 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 062B869A1CA5396500083F34 /* libstdc++.tbd */; };
 		062B869D1CA5397000083F34 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 062B869C1CA5397000083F34 /* libz.tbd */; };
+		062B86A01CA558CE00083F34 /* CHSocialResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 062B869F1CA558CE00083F34 /* CHSocialResponseData.m */; };
 		0632E32E1CA3E409005A58DA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0632E32D1CA3E409005A58DA /* main.m */; };
 		0632E3311CA3E409005A58DA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0632E3301CA3E409005A58DA /* AppDelegate.m */; };
 		0632E3341CA3E409005A58DA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0632E3331CA3E409005A58DA /* ViewController.m */; };
@@ -37,6 +38,8 @@
 		062B86981CA5395D00083F34 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		062B869A1CA5396500083F34 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		062B869C1CA5397000083F34 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		062B869E1CA558CE00083F34 /* CHSocialResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHSocialResponseData.h; sourceTree = "<group>"; };
+		062B869F1CA558CE00083F34 /* CHSocialResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHSocialResponseData.m; sourceTree = "<group>"; };
 		0632E3291CA3E409005A58DA /* CHSocialServiceDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CHSocialServiceDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0632E32D1CA3E409005A58DA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0632E32F1CA3E409005A58DA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -126,6 +129,8 @@
 				0632E3461CA3E50B005A58DA /* CHSocialServiceCenter.m */,
 				062B868B1CA5301300083F34 /* CHSocialHandlerData.h */,
 				062B868C1CA5301300083F34 /* CHSocialHandlerData.m */,
+				062B869E1CA558CE00083F34 /* CHSocialResponseData.h */,
+				062B869F1CA558CE00083F34 /* CHSocialResponseData.m */,
 			);
 			path = CHSocialService;
 			sourceTree = "<group>";
@@ -189,7 +194,6 @@
 				TargetAttributes = {
 					0632E3281CA3E409005A58DA = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = YPF954636S;
 					};
 				};
 			};
@@ -281,6 +285,7 @@
 				062B868D1CA5301300083F34 /* CHSocialHandlerData.m in Sources */,
 				0632E3311CA3E409005A58DA /* AppDelegate.m in Sources */,
 				0632E3471CA3E50B005A58DA /* CHSocialServiceCenter.m in Sources */,
+				062B86A01CA558CE00083F34 /* CHSocialResponseData.m in Sources */,
 				0632E32E1CA3E409005A58DA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,7 +402,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CHSocialServiceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Chausson.CHSocialServiceDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.baifu.SurfingTV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -413,7 +418,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CHSocialServiceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Chausson.CHSocialServiceDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.baifu.SurfingTV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

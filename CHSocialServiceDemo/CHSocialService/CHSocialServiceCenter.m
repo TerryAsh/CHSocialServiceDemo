@@ -7,6 +7,7 @@
 //
 #import "UMSocial.h"
 #import "CHSocialServiceCenter.h"
+
 #import "UMSocialSinaSSOHandler.h"
 #import "UMSocialWechatHandler.h"
 #import "UMSocialLaiwangHandler.h"
@@ -33,6 +34,13 @@ typedef void(^ResultCallback)(BOOL successful) ;
 + (void)setUmengAppkey:(NSString *)key{
 
     CHUMAPP_KEY = key;
+    [UMSocialData setAppKey:CHUMAPP_KEY];
+}
++ (BOOL)handleOpenURL:(NSURL *)url delegate:(id)delegate{
+   return  [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
+}
++ (void)applicationDidBecomeActive{
+        [UMSocialSnsService  applicationDidBecomeActive];
 }
 - (void)configurationAppKey:(NSString *)key
               AppIdentifier:(NSString *)identifier
@@ -102,10 +110,12 @@ typedef void(^ResultCallback)(BOOL successful) ;
     }
 
 }
+
 - (void)loginInAppliactionType:(CHSocialType)type
                     controller:(UIViewController *)controller
-                    completion:(void(^)(NSDictionary *info))finish{
-    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
+                    completion:(void(^)(CHSocialResponseData *response))finish{
+    _callback = nil;
+//    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
     UMSocialSnsType typeName;
     switch (type) {
         case CHSocialSina:
@@ -121,6 +131,7 @@ typedef void(^ResultCallback)(BOOL successful) ;
         default:
             break;
     }
+    CHSocialResponseData *responseData = [[CHSocialResponseData alloc]init];
     NSString *platformName = [UMSocialSnsPlatformManager getSnsPlatformString:typeName];
     
     UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:platformName];
@@ -128,21 +139,29 @@ typedef void(^ResultCallback)(BOOL successful) ;
         //           获取微博用户名、uid、token、第三方的原始用户信息thirdPlatformUserProfile等
         if (response.responseCode == UMSResponseCodeSuccess) {
             UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary] valueForKey:platformName];
-            NSLog(@"\nusername = %@,\n usid = %@,\n token = %@ iconUrl = %@,\n unionId = %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL, snsAccount.unionId );
+//            NSLog(@"\nusername = %@,\n usid = %@,\n token = %@ iconUrl = %@,\n unionId = %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL, snsAccount.unionId );
             if (finish) {
-                finish(@{@"name":snsAccount.userName});
+                responseData.accessToken = snsAccount.accessToken;
+               responseData.iconURL = snsAccount.iconURL;
+               responseData.unionId = snsAccount.unionId;
+               responseData.usid = snsAccount.usid;
+               responseData.userName = snsAccount.userName;
+                finish(responseData);
             }
+        }else{
+            NSError *error = [[NSError alloc]initWithDomain:@"loginInAppliactionType Error" code:response.responseCode userInfo:@{@"Message":response.message}];
+            response.error = error;
+            finish(responseData);
         }
-        //这里可以获取到腾讯微博openid,Qzone的token等
-        /*
-         if ([platformName isEqualToString:UMShareToTencent]) {
-         [[UMSocialDataService defaultDataService] requestSnsInformation:UMShareToTencent completion:^(UMSocialResponseEntity *respose){
-         NSLog(@"get openid  response is %@",respose);
-         }];
-         }
-         */
     });
+    [[UMSocialDataService defaultDataService] requestSnsInformation:platformName  completion:^(UMSocialResponseEntity *response){
+//        NSLog(@"SnsInformation is %@",response.data);
+    }];
+    
 }
+
+
+
 #pragma mark UMSocialUIDelegate
 -(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response{
     if (response.responseCode == UMSResponseCodeSuccess) {

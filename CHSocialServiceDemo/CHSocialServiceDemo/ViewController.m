@@ -29,5 +29,20 @@
     }];
 
 }
+- (IBAction)wechatLogin:(UIButton *)sender {
+    [[CHSocialServiceCenter shareInstance]loginInAppliactionType:CHSocialWeChat controller:self completion:^(CHSocialResponseData *response) {
+        
+    }];
+}
+- (IBAction)sinaLogin:(UIButton *)sender {
+    [[CHSocialServiceCenter shareInstance]loginInAppliactionType:CHSocialWeChat controller:self completion:^(CHSocialResponseData *response) {
+        
+    }];
+}
+- (IBAction)qqLogin:(UIButton *)sender {
+    [[CHSocialServiceCenter shareInstance]loginInAppliactionType:CHSocialWeChat controller:self completion:^(CHSocialResponseData *response) {
+        
+    }];
+}
 
 @end

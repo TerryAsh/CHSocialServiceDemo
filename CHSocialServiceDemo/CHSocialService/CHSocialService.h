@@ -6,4 +6,4 @@
 //  Copyright © 2016年 Chausson. All rights reserved.
 //
 #import "CHSocialServiceCenter.h"
-
+#import "UMSocialSnsService.h"

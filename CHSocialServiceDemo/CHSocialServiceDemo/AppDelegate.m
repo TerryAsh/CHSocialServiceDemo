@@ -17,14 +17,24 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [CHSocialServiceCenter setUmengAppkey:@"53290df956240b6b4a0084b3"];
-    [[CHSocialServiceCenter shareInstance] configurationAppKey:nil AppIdentifier:@"wxdc1e388c3822c80b" secret:@"a393c1527aaccb95f3a4c88d6d1455f6" redirectURL:nil sourceURL:@"http://www.baidu.com" type:CHSocialWeChat];
+    [CHSocialServiceCenter setUmengAppkey:@"56c2833567e58e65c5001476"];
+    [[CHSocialServiceCenter shareInstance] configurationAppKey:nil AppIdentifier:@"wx5f10246d10b41397" secret:@"ae715541c2eb3c2ee3d714837dad8742" redirectURL:nil sourceURL:@"http://www.baidu.com" type:CHSocialWeChat];
     [[CHSocialServiceCenter shareInstance] configurationAppKey:@"c7394704798a158208a74ab60104f0ba" AppIdentifier:@"100424468" secret:nil redirectURL:nil sourceURL:@"http://www.umeng.com/social" type:CHSocialQQ];
     [[CHSocialServiceCenter shareInstance] configurationAppKey:@"3921700954" AppIdentifier:@"100424468" secret:@"04b48b094faeb16683c32669824ebdad" redirectURL:@"http://sns.whalecloud.com/sina2/callback" sourceURL:@"http://www.umeng.com/social" type:CHSocialSina];
 
     return YES;
 }
 
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return  [CHSocialServiceCenter handleOpenURL:url delegate:nil];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [CHSocialServiceCenter  applicationDidBecomeActive];
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -39,9 +49,7 @@
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
+
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
