@@ -40,7 +40,7 @@ typedef void(^ResultCallback)(BOOL successful) ;
                   sourceURL:(NSString *)url
                        type:(CHSocialType)type{
     switch (type) {
-        case CHSocialQQHandler:
+        case CHSocialQQ:
             [UMSocialQQHandler setQQWithAppId:identifier appKey:key url:url];
             break;
         case CHSocialSina:
