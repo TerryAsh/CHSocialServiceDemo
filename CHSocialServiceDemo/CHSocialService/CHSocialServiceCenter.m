@@ -11,6 +11,7 @@
 #import "UMSocialWechatHandler.h"
 #import "UMSocialLaiwangHandler.h"
 #import "UMSocialQQHandler.h"
+#import "UMSocialControllerService.h"
 static NSString *CHUMAPP_KEY ;
 typedef void(^ResultCallback)(BOOL successful) ;
 @interface CHSocialServiceCenter ()<UMSocialUIDelegate>
@@ -72,6 +73,48 @@ typedef void(^ResultCallback)(BOOL successful) ;
         _callback = finish;
     }
 }
+- (void)loginInAppliactionType:(CHSocialType)type
+                    controller:(UIViewController *)controller
+                    completion:(void(^)(NSDictionary *info))finish{
+    [UMSocialControllerService defaultControllerService].socialUIDelegate = self;
+    UMSocialSnsType typeName;
+    switch (type) {
+        case CHSocialSina:
+            typeName = UMSocialSnsTypeSina;
+            break;
+        case CHSocialWeChat:
+            typeName = UMSocialSnsTypeWechatSession;
+            break;
+        case CHSocialQQ:
+            typeName = UMSocialSnsTypeMobileQQ;
+            break;
+            
+        default:
+            break;
+    }
+    NSString *platformName = [UMSocialSnsPlatformManager getSnsPlatformString:typeName];
+    
+    UMSocialSnsPlatform *snsPlatform = [UMSocialSnsPlatformManager getSocialPlatformWithName:platformName];
+    snsPlatform.loginClickHandler(controller,[UMSocialControllerService defaultControllerService],YES,^(UMSocialResponseEntity *response){
+        //           获取微博用户名、uid、token、第三方的原始用户信息thirdPlatformUserProfile等
+        if (response.responseCode == UMSResponseCodeSuccess) {
+            UMSocialAccountEntity *snsAccount = [[UMSocialAccountManager socialAccountDictionary] valueForKey:platformName];
+            NSLog(@"\nusername = %@,\n usid = %@,\n token = %@ iconUrl = %@,\n unionId = %@",snsAccount.userName,snsAccount.usid,snsAccount.accessToken,snsAccount.iconURL, snsAccount.unionId );
+            if (finish) {
+                finish(@{@"name":snsAccount.userName});
+            }
+        }
+        //这里可以获取到腾讯微博openid,Qzone的token等
+        /*
+         if ([platformName isEqualToString:UMShareToTencent]) {
+         [[UMSocialDataService defaultDataService] requestSnsInformation:UMShareToTencent completion:^(UMSocialResponseEntity *respose){
+         NSLog(@"get openid  response is %@",respose);
+         }];
+         }
+         */
+    });
+}
+#pragma mark UMSocialUIDelegate
 -(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response{
     if (response.responseCode == UMSResponseCodeSuccess) {
         if (_callback) {
@@ -85,4 +128,21 @@ typedef void(^ResultCallback)(BOOL successful) ;
     _callback = nil;
     
 }
+
+/**
+ 关闭当前页面之后
+ 
+ @param fromViewControllerType 关闭的页面类型
+ 
+ */
+-(void)didCloseUIViewController:(UMSViewControllerType)fromViewControllerType{
+    
+}
+
+/**
+ 各个页面执行授权完成、分享完成、或者评论完成时的回调函数
+ 
+ @param response 返回`UMSocialResponseEntity`对象，`UMSocialResponseEntity`里面的viewControllerType属性可以获得页面类型
+ */
+
 @end

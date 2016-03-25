@@ -10,7 +10,7 @@
 typedef NS_OPTIONS(NSInteger ,CHSocialType) {
     CHSocialSina,
     CHSocialWeChat,
-    CHSocialQQHandler
+    CHSocialQQ
 };
 @interface CHSocialServiceCenter : NSObject
 + (CHSocialServiceCenter *)shareInstance;
